@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://jsic8utshhff"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_rhtm3"]
+[ext_resource type="PackedScene" uid="uid://d0ly5f2n42fd1" path="res://Models/PlayerBot.glb" id="1_uwvmt"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_w0d08"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath("Model:rotation")
+properties/2/spawn = true
+properties/2/sync = true
+properties/2/watch = false
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ax4vw"]
+radius = 1.0
+height = 4.0
+
+[node name="Player" type="CharacterBody3D"]
+motion_mode = 1
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("1_rhtm3")
+SENSITIVITY = 0.001
+
+[node name="Model" parent="." instance=ExtResource("1_uwvmt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_w0d08")
+
+[node name="Head" type="Node3D" parent="."]
+
+[node name="Camera" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, -1.98423e-09, 0, 1, 0, 1.98423e-09, 0, 1, 0, 1, 0.0888989)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Head"]
+transform = Transform3D(-1, 1.76073e-08, -8.77409e-08, -1.93235e-08, -0.999808, 0.0195987, -8.7379e-08, 0.0195987, 0.999808, 0, 1.1493, -0.18002)
+spot_range = 29.0
+spot_angle = 49.2188
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 1.8)
+shape = SubResource("CapsuleShape3D_ax4vw")

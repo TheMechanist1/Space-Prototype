@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqahwx2vtmu11"]
+
+[sub_resource type="GDScript" id="GDScript_tjfp0"]
+script/source = "extends Node
+
+var peerClient = ENetMultiplayerPeer.new()
+var peerServer = ENetMultiplayerPeer.new()
+
+func _ready():
+	# Create client.
+	peerClient.create_client(\"localhost\", 9999)
+	multiplayer.multiplayer_peer = peerClient
+	print(peerClient.generate_unique_id())
+	
+	# Create server.
+	peerServer.create_server(9999, 5)
+	multiplayer.multiplayer_peer = peerServer
+	print(peerServer.generate_unique_id())
+	multiplayer.peer_connected.connect(_connected)
+	
+func _process(_delta):
+	#print(peerClient.get_connection_status())
+	pass
+	
+func _connected(id):
+	print(id)
+"
+
+[node name="Control" type="CanvasLayer"]
+visible = false
+script = SubResource("GDScript_tjfp0")
+
+[node name="Host" type="Button" parent="."]
+offset_left = 41.0
+offset_top = 62.0
+offset_right = 85.0
+offset_bottom = 93.0
+scale = Vector2(4.5418, 2.84828)
+text = "Host
+"
+
+[node name="Join" type="Button" parent="."]
+offset_left = 261.0
+offset_top = 62.0
+offset_right = 305.0
+offset_bottom = 93.0
+scale = Vector2(4.5418, 2.84828)
+text = "Join
+"
+
+[node name="Start" type="Button" parent="."]
+offset_left = 484.0
+offset_top = 61.0
+offset_right = 584.0
+offset_bottom = 92.0
+scale = Vector2(4.5418, 2.84828)
+text = "Start Server
+"
