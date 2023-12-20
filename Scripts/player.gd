@@ -51,6 +51,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+			$Head/RayCast3D.rotation.x = camera.rotation.x + deg_to_rad(90)
 			
 		if Input.is_action_just_pressed("exit"): get_tree().quit()
 
@@ -62,7 +63,7 @@ func _physics_process(delta: float) -> void:
 		var collision = move_and_collide(velocity * delta)
 		if collision and collision.get_collider() is RigidBody3D:
 			var push_direction = velocity.normalized()
-			var push_strength = 0.1
+			var push_strength = 0.1 / collision.get_collider().mass
 			collision.get_collider().apply_central_force(push_direction * push_strength)
 			
 func capture_mouse() -> void:
