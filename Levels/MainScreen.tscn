@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/SceneManager.gd" id="1_q2oyc"]
 [ext_resource type="PackedScene" uid="uid://jsic8utshhff" path="res://Entities/Player.tscn" id="2_tqcjd"]
 [ext_resource type="Texture2D" uid="uid://del2q851ry2xy" path="res://skybox/left.png" id="4_luiyv"]
-[ext_resource type="PackedScene" uid="uid://b4ddcwccom44y" path="res://Entities/Asteroid.tscn" id="5_nf57k"]
+[ext_resource type="PackedScene" uid="uid://b31e56qshwu8w" path="res://Entities/Asteroid.tscn" id="5_nf57k"]
 [ext_resource type="Script" path="res://Scripts/AsteroidSpawner.gd" id="6_4lfah"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_d68ej"]

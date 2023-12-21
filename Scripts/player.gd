@@ -25,6 +25,7 @@ var updown_vel: Vector3
 @onready var camera: Camera3D = $Head/Camera
 @onready var head = $Head
 @onready var model = $Model
+@onready var RayCast = $Head/RayCast3D
 
 	
 func _on_enter_tree():
@@ -52,7 +53,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 			$Head/RayCast3D.rotation.x = camera.rotation.x + deg_to_rad(90)
-			
+		
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			if(RayCast.is_colliding() && RayCast.get_collider()):
+				var collider = RayCast.get_collider()
+				var script_node = collider.get_node("ScriptNode") if collider.has_node("ScriptNode") else null
+				if(script_node):
+					script_node.split()
+		
 		if Input.is_action_just_pressed("exit"): get_tree().quit()
 
 func _physics_process(delta: float) -> void:
