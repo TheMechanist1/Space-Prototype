@@ -32,15 +32,18 @@ func _on_enter_tree():
 	pass
 	
 func _ready() -> void:
+	camera.current = false
 	$MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
 	capture_mouse()
+	
+	print("Name:", name, " Auth:", $MultiplayerSynchronizer.get_multiplayer_authority(), " id:", multiplayer.get_unique_id())
 	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		model.visible = false
 		camera.current = true
-		print(name + " id " + str($MultiplayerSynchronizer.get_multiplayer_authority()))
 	else:
 		model.visible = true
+		camera.current = false
 
 func _unhandled_input(event: InputEvent) -> void:	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
