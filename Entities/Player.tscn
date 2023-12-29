@@ -38,7 +38,6 @@ replication_config = SubResource("SceneReplicationConfig_w0d08")
 
 [node name="Camera" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, -1.98423e-09, 0, 1, 0, 1.98423e-09, 0, 1, 0, 1, 0.0888989)
-current = true
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Head"]
 transform = Transform3D(-1, 1.76073e-08, -8.77409e-08, -1.93235e-08, -0.999808, 0.0195987, -8.7379e-08, 0.0195987, 0.999808, 0, 1.1493, -0.18002)
@@ -52,3 +51,9 @@ target_position = Vector3(0, -5, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 1.8)
 shape = SubResource("CapsuleShape3D_ax4vw")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.29544, 0)
+billboard = 1
+text = "HELLO"
+font_size = 50

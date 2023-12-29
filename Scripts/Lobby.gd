@@ -37,13 +37,16 @@ func create_game():
 	if error:
 		return error
 	multiplayer.multiplayer_peer = peer
-	send_player_information($TextEdit.text, multiplayer.get_unique_id())
+	send_player_information("Lmao", multiplayer.get_unique_id())
 	print(str(multiplayer.get_unique_id()) + ": Succesfully Started Server")
 	
 @rpc("any_peer", "call_local")
 func start_game():
 	var scene = load("res://Levels/MainScreen.tscn").instantiate()
+	#get_tree().root.add_child(scene)
 	load_game("res://Levels/MainScreen.tscn")
+	#self.hide()
+	
 	#Add asteroids here I think
 
 func remove_multiplayer_peer():
@@ -65,7 +68,7 @@ func _on_player_disconnected(id):
 
 #More secure way to transfer information
 func _on_connected_ok():
-	send_player_information.rpc_id(1, $TextEdit.text, multiplayer.get_unique_id())
+	send_player_information.rpc_id(1, "Lmao", multiplayer.get_unique_id())
 
 func _on_connected_fail():
 	print("Peer failed to connect")	

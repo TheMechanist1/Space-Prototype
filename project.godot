@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameManager="*res://Scripts/GameManager.gd"
 AsteroidSpawner="*res://Scripts/AsteroidSpawner.gd"
+Lobby="*res://Scripts/Lobby.gd"
 
 [input]
 

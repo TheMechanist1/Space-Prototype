@@ -32,10 +32,6 @@ func inital_setup():
 		
 func create_asteroid(asteroid_properties):
 	if(!asteroid_properties): return
-	print(get_multiplayer().get_unique_id())
-	print(is_inside_tree())
-	print(get_multiplayer().has_multiplayer_peer())
-	print(is_multiplayer_authority())
 	spawner = get_tree().current_scene.get_node("AsteroidMultiSpawner")
 	spawner.spawn([
 			asteroid_properties.pos,

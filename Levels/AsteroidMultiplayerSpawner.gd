@@ -6,7 +6,6 @@ extends MultiplayerSpawner
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_spawn_function(Callable(self, "custom_spawn"))
-	pass
 	
 func custom_spawn(data):
 	var pos = data[0]

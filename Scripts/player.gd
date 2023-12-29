@@ -29,14 +29,13 @@ var updown_vel: Vector3
 
 	
 func _on_enter_tree():
-	pass
+	camera.current = false
 	
 func _ready() -> void:
-	camera.current = false
 	$MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
-	capture_mouse()
-	
 	print("Name:", name, " Auth:", $MultiplayerSynchronizer.get_multiplayer_authority(), " id:", multiplayer.get_unique_id())
+	$Label3D.text = str(name)
+	capture_mouse()
 	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		model.visible = false
@@ -64,18 +63,20 @@ func _unhandled_input(event: InputEvent) -> void:
 				if(script_node):
 					script_node.split()
 		
-		if Input.is_action_just_pressed("exit"): get_tree().quit()
+		if Input.is_action_just_pressed("exit"):
+			Lobby.server_disconnected.emit()
+			get_tree().quit()
 
 func _physics_process(delta: float) -> void:
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		velocity = _walk(delta) + _gravity(delta) + _jump(delta)
 		move_and_slide()
 		
-		var collision = move_and_collide(velocity * delta)
-		if collision and collision.get_collider() is RigidBody3D:
+		var collision = move_and_slide()
+		if collision and get_slide_collision(0).get_collider() is RigidBody3D:
 			var push_direction = velocity.normalized()
-			var push_strength = 0.1 / collision.get_collider().mass
-			collision.get_collider().apply_central_force(push_direction * push_strength)
+			var push_strength = 1
+			get_slide_collision(0).get_collider().apply_central_impulse(push_direction * push_strength)
 			
 func capture_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
