@@ -9,7 +9,9 @@ class_name Asteroid extends Node3D
 var update_flag = false
 
 @onready var collider = %CollisionShape3D
-@onready var model = $Icosphere
+@onready var model1 = $Icosphere_1
+@onready var model2 = $Icosphere_2
+@onready var model3 = $Icosphere_2
 
 func _ready():
 	ore_amount = randf_range(10, 25)
@@ -25,19 +27,31 @@ func _process(delta):
 		update_flag = false
 		
 func update_scale():
+	clear_model()
 	match(asteroid_state):
 		1:
-			model.scale = Vector3(1, 1, 1)
-			collider.scale = Vector3(1, 1, 1)
+			scale_object(Vector3(1, 1, 1))
+			model3.visible = true
 		2:
-			model.scale = Vector3(3, 3, 3)
-			collider.scale = Vector3(3, 3, 3)
+			scale_object(Vector3(3, 3, 3))
+			model2.visible = true
 		3:
-			model.scale = Vector3(5, 5, 5)
-			collider.scale = Vector3(5, 5, 5)
+			scale_object(Vector3(5, 5, 5))
+			model1.visible = true
 		_:
 			print("Bro what?")
 			
+func clear_model():
+	model1.visible = false
+	model2.visible = false
+	model3.visible = false
+	
+func scale_object(amount : Vector3):
+	model1.scale = amount
+	model2.scale = amount
+	model3.scale = amount
+	collider.scale = amount
+
 func split():
 	if asteroid_state == 1: 
 		return

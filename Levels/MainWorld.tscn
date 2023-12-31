@@ -17,6 +17,16 @@ script = ExtResource("2_o2ker")
 text = "Create
 "
 
+[node name="Join" parent="Lobby" index="1"]
+offset_left = 336.0
+offset_right = 380.0
+
+[node name="Start" parent="Lobby" index="2"]
+offset_left = 556.0
+offset_top = 64.0
+offset_right = 656.0
+offset_bottom = 95.0
+
 [node name="TextEdit" type="TextEdit" parent="Lobby"]
 offset_left = 41.0
 offset_top = 168.0
