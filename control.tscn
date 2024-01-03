@@ -24,7 +24,6 @@ func _process(_delta):
 	
 func _connected(id):
 	print(id)
-
 "
 
 [node name="Control" type="CanvasLayer"]

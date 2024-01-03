@@ -19,15 +19,12 @@ func _ready():
 func inital_setup():
 		print("Multiplayer setup:" + str(multiplayer.get_unique_id()))	
 		for i in range(1):
-			var asteroid_seed = randi_range(-1000000000, 1000000000)
-			seed(asteroid_seed)
 			var initial_properties = {
-				pos = Vector3.LEFT * 10,
+				pos = Vector3.LEFT * 100,
 				asteroid_type = "stone",
 				asteroid_state = 3,
 				ore_amount = 0
 			}
-			
 			create_asteroid(initial_properties)
 		
 func create_asteroid(asteroid_properties):
@@ -40,16 +37,6 @@ func create_asteroid(asteroid_properties):
 			asteroid_properties.ore_amount,
 			Asteroids.size()+1,
 		])
-		
-func update_asteroid():
-	for i in Asteroids:
-		AsteroidSpawner.rpc("create_asteroid_rpc", i)
-	
-func update_asteroid_list(new_list):
-	Asteroids.clear()
-	for i in new_list:
-		var id = new_list[i]
-		Asteroids[i] = id
 	
 func remove_asteroid(name):
 	var asteroid = get_tree().current_scene.get_node(NodePath(name))

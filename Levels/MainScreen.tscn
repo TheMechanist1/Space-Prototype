@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://581eb8dgrorj"]
+[gd_scene load_steps=10 format=3 uid="uid://581eb8dgrorj"]
 
 [ext_resource type="PackedScene" uid="uid://dxwy31gjv5kis" path="res://Models/MiningShip.glb" id="1_2ybgt"]
 [ext_resource type="Script" path="res://Scripts/SceneManager.gd" id="1_q2oyc"]
 [ext_resource type="PackedScene" uid="uid://jsic8utshhff" path="res://Entities/Player.tscn" id="2_tqcjd"]
 [ext_resource type="Texture2D" uid="uid://del2q851ry2xy" path="res://skybox/left.png" id="4_luiyv"]
 [ext_resource type="Script" path="res://Levels/AsteroidMultiplayerSpawner.gd" id="5_suvoi"]
+[ext_resource type="PackedScene" uid="uid://bod1m0fwuxvbk" path="res://Entities/MassDriver.tscn" id="6_d5q7o"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_d68ej"]
 panorama = ExtResource("4_luiyv")
@@ -47,5 +48,8 @@ environment = SubResource("Environment_47o0t")
 _spawnable_scenes = PackedStringArray("res://Entities/Asteroid.tscn")
 spawn_path = NodePath("..")
 script = ExtResource("5_suvoi")
+
+[node name="MassDriver" parent="." instance=ExtResource("6_d5q7o")]
+transform = Transform3D(1, 0, 0, 0, 0.964502, -0.264075, 0, 0.264075, 0.964502, 0, 19.9061, -15)
 
 [connection signal="spawned" from="AsteroidMultiSpawner" to="AsteroidMultiSpawner" method="_on_spawned"]

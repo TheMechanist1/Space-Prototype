@@ -60,8 +60,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			if(RayCast.is_colliding() && RayCast.get_collider()):
 				var collider = RayCast.get_collider()
 				var script_node = collider.get_node("ScriptNode") if collider.has_node("ScriptNode") else null
-				if(script_node):
-					script_node.split()
+				if(script_node is Activatable):
+					script_node.activate()
+					script_node.activate_rpc.rpc()
 		
 		if Input.is_action_just_pressed("exit"):
 			Lobby.server_disconnected.emit()
