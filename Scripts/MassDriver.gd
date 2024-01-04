@@ -13,6 +13,6 @@ func activate(type) -> void:
 	match(type):
 		"Left Mouse Button":
 			%AnimationPlayer1.play("FireAction")
-			print(multiplayer.get_unique_id(), " ", "FIRE")
+			GameManager.add_profit_rpc.rpc(10)
 		_:
 			pass
