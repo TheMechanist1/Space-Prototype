@@ -1,8 +1,9 @@
 class_name Activatable extends Node3D
 
-func activate() -> void:
+func activate(type) -> void:
 	print("Activated")
 
 @rpc("any_peer")
-func activate_rpc():
-	activate()
+func activate_rpc(type):
+	print(type)
+	activate(type)

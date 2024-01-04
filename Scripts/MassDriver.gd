@@ -9,6 +9,10 @@ func _ready():
 func _process(delta):
 	pass
 
-func activate() -> void:
-	%AnimationPlayer1.play("FireAction")
-	print(multiplayer.get_unique_id(), " ", "FIRE")
+func activate(type) -> void:
+	match(type):
+		"Left Mouse Button":
+			%AnimationPlayer1.play("FireAction")
+			print(multiplayer.get_unique_id(), " ", "FIRE")
+		_:
+			pass

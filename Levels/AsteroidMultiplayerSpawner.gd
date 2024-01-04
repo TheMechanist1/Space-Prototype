@@ -13,15 +13,19 @@ func custom_spawn(data):
 	var state = data[2]
 	var ore = data[3]
 	var id = "asteroid_" + str(data[4])
-
-	var new_asteroid_instance = asteroid_scene.instantiate()
+	var ang_vel = data[5]
+	var lin_vel = data[6]
+	
+	var new_asteroid_instance : Node3D = asteroid_scene.instantiate()
 	if new_asteroid_instance:
 		var child = (new_asteroid_instance.get_node("ScriptNode") if new_asteroid_instance.has_node("ScriptNode") else null)
 		child.script = asteroid_script
 		
 		if child:
 			new_asteroid_instance.name = id
-			new_asteroid_instance.global_position = pos
+			new_asteroid_instance.position = pos
+			new_asteroid_instance.angular_velocity = ang_vel
+			new_asteroid_instance.linear_velocity = lin_vel
 			child.asteroid_type = type
 			child.asteroid_state = state
 			child.ore_amount = ore
@@ -31,4 +35,4 @@ func custom_spawn(data):
 	return new_asteroid_instance
 
 func _on_spawned(node):
-	print("Spawned: " + str(node))
+	pass

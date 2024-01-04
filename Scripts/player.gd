@@ -1,8 +1,8 @@
 class_name Player extends CharacterBody3D
 
 @export_category("Player")
-@export_range(1, 35, 1) var speed: float = 10 # m/s
-@export_range(10, 400, 1) var acceleration: float = 100 # m/s^2
+@export_range(1, 35, 1) var speed: float = 25 # m/s
+@export_range(10, 400, 1) var acceleration: float = 25 # m/s^2
 @export var SENSITIVITY: float = 1 # m/s^2
 
 
@@ -51,22 +51,26 @@ func _unhandled_input(event: InputEvent) -> void:
 			#if mouse_captured: _rotate_camera()
 			head.rotate_y(-event.relative.x * SENSITIVITY)
 			model.rotate_y(-event.relative.x * SENSITIVITY)
-			
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
-			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+			
 			$Head/RayCast3D.rotation.x = camera.rotation.x + deg_to_rad(90)
 		
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		if event is InputEventMouseButton and event.is_pressed():
 			if(RayCast.is_colliding() && RayCast.get_collider()):
 				var collider = RayCast.get_collider()
 				var script_node = collider.get_node("ScriptNode") if collider.has_node("ScriptNode") else null
 				if(script_node is Activatable):
-					script_node.activate()
-					script_node.activate_rpc.rpc()
+					script_node.activate(event.as_text())
+					script_node.activate_rpc.rpc(event.as_text())
 		
 		if Input.is_action_just_pressed("exit"):
 			Lobby.server_disconnected.emit()
 			get_tree().quit()
+			
+		print(camera.rotation_degrees)
+		camera.rotation.x = clampf(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))	
+		camera.rotation.y = 0
+		camera.rotation.z = 0
 
 func _physics_process(delta: float) -> void:
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
@@ -112,5 +116,5 @@ func _jump(delta: float) -> Vector3:
 		
 	jump_vel = Vector3(0, dir*speed, 0)
 	
-	jump_vel = jump_vel.move_toward(Vector3.ZERO, gravity * delta)
+	jump_vel = jump_vel.move_toward(Vector3.ZERO, acceleration * delta)
 	return jump_vel

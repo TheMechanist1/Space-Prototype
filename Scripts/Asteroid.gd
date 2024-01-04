@@ -60,12 +60,23 @@ func split():
 	click_flag = true
 	
 	for i in range(3):
-		var pos = self.global_position + Vector3(randf_range(-5, 5), randf_range(-5, 5), randf_range(-5, 5))
+		var pos = self.global_position + Utility.random_vector3_uniform(-0.5, 0.5)
 		if(is_multiplayer_authority()):
-			AsteroidSpawner.create_asteroid({pos = pos, asteroid_type = self.asteroid_type, asteroid_state = self.asteroid_state - 1, ore_amount = self.ore_amount})
+			AsteroidSpawner.create_asteroid({
+				pos = pos,
+				asteroid_type = self.asteroid_type, 
+				asteroid_state = self.asteroid_state - 1, 
+				ore_amount = self.ore_amount, 
+				angular = get_parent_node_3d().angular_velocity + Utility.random_vector3_uniform(-0.5, 0.5), 
+				linear = get_parent_node_3d().linear_velocity + Utility.random_vector3_uniform(-0.5, 0.5)
+				})
 	
 	if(is_multiplayer_authority()):
 		AsteroidSpawner.remove_asteroid(get_parent_node_3d().name)
 		
-func activate() -> void:
-	split()
+func activate(type) -> void:
+	match(type):
+		"Left Mouse Button":
+			split()
+		_:
+			pass
