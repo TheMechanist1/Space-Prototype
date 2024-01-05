@@ -25,15 +25,16 @@ func fire_projectile():
 #Add the asteroid to the barrel so we can get money
 func add_to_barrel(type):
 	var player = super.get_node_from_type(type)
-	var projectile = player.asteroid_stack.pop()
+	var projectile = player.asteroid_stack.peek()
 	if projectile && !has_projectile:
+		projectile = player.asteroid_stack.pop()
+		has_projectile = true
 		projectile.pos = %ProjectileChamber.global_position
 		projectile.angular = Vector3.ZERO
 		projectile.linear = Vector3.ZERO
 		projectile_node = AsteroidSpawner.create_asteroid(projectile)
 		projectile_script = projectile_node.find_child("ScriptNode")
 		projectile_script.disable_collision()
-		has_projectile = true
 
 func activate(type) -> void:
 	match(type["info"]):
