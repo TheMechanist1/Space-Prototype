@@ -27,6 +27,8 @@ var updown_vel: Vector3
 @onready var model = $Model
 @onready var RayCast = $Head/RayCast3D
 
+var asteroid_stack_last_size
+var asteroid_stack : Stack
 	
 func _on_enter_tree():
 	camera.current = false
@@ -43,6 +45,9 @@ func _ready() -> void:
 	else:
 		model.visible = true
 		camera.current = false
+		
+	asteroid_stack = Stack.new()
+	asteroid_stack_last_size = 0
 
 func _unhandled_input(event: InputEvent) -> void:	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
@@ -60,14 +65,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				var collider = RayCast.get_collider()
 				var script_node = collider.get_node("ScriptNode") if collider.has_node("ScriptNode") else null
 				if(script_node is Activatable):
-					script_node.activate(event.as_text())
-					script_node.activate_rpc.rpc(event.as_text())
+					var info_to_send = {"node_path" = self.get_path(), "info" = event.as_text()}
+					script_node.activate_rpc.rpc(info_to_send)
+					script_node.activate(info_to_send)
 		
 		if Input.is_action_just_pressed("exit"):
 			Lobby.server_disconnected.emit()
 			get_tree().quit()
 			
-		print(camera.rotation_degrees)
 		camera.rotation.x = clampf(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))	
 		camera.rotation.y = 0
 		camera.rotation.z = 0
@@ -76,6 +81,7 @@ func _physics_process(delta: float) -> void:
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		velocity = _walk(delta) + _gravity(delta) + _jump(delta)
 		move_and_slide()
+		process_asteroid_stack()
 		
 		var collision = move_and_slide()
 		if collision and get_slide_collision(0).get_collider() is RigidBody3D:
@@ -118,3 +124,8 @@ func _jump(delta: float) -> Vector3:
 	
 	jump_vel = jump_vel.move_toward(Vector3.ZERO, acceleration * delta)
 	return jump_vel
+	
+func process_asteroid_stack():
+	if asteroid_stack.size() != asteroid_stack_last_size:
+		asteroid_stack.pretty_print()
+		asteroid_stack_last_size = asteroid_stack.size()

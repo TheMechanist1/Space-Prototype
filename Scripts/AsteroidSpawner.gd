@@ -19,12 +19,12 @@ func _ready():
 func inital_setup():
 		print("Multiplayer setup:" + str(multiplayer.get_unique_id()))
 		
-		for i in range(250):
+		for i in range(10):
 			var initial_properties = {
-				pos = Utility.random_vector3_exclusion(Vector3(-500, -500, -500), Vector3(500, 500, 500), Vector3(-100, -100, -100), Vector3(100, 100, 100)),
+				pos = Utility.random_vector3_exclusion(Vector3(-250, -250, -250), Vector3(250, 250, 250), Vector3(-25, -25, -25), Vector3(25, 25, 25)),
 				asteroid_type = "stone",
 				asteroid_state = randi_range(1, 3),
-				ore_amount = 0,
+				ore_amount = randf_range(1, 10),
 				angular = Utility.random_vector3(Vector3(-5, -5, -5), Vector3(5, 5, 5)),
 				linear = Utility.random_vector3(Vector3(-5, -5, -5), Vector3(5, 5, 5))
 			}
@@ -33,7 +33,7 @@ func inital_setup():
 func create_asteroid(asteroid_properties):
 	if(!asteroid_properties): return
 	spawner = get_tree().current_scene.get_node("AsteroidMultiSpawner")
-	spawner.spawn([
+	return spawner.spawn([
 			asteroid_properties.pos,
 			asteroid_properties.asteroid_type,
 			asteroid_properties.asteroid_state,

@@ -30,14 +30,8 @@ _data = {
 
 [node name="MassDriver" instance=ExtResource("1_jl6u3")]
 
-[node name="Cube_001" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 10, 0, 4, -9.8)
-
-[node name="Cylinder" parent="." index="1"]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -1.37769)
-
 [node name="Cylinder_001" parent="." index="5"]
-transform = Transform3D(0, 0, 0, 0, -4.37139e-05, 0, 0, -1000.06, 0, 0, 0, 2.2)
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 2.2)
 
 [node name="Area3D" type="Area3D" parent="." index="7"]
 
@@ -59,3 +53,7 @@ unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_03xdj")
 }
+
+[node name="ProjectileChamber" type="Node3D" parent="." index="10"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
