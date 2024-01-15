@@ -13,8 +13,7 @@ func custom_spawn(data):
 	var state = data[2]
 	var ore = data[3]
 	var id = "asteroid_" + str(data[4])
-	var ang_vel = data[5]
-	var lin_vel = data[6]
+	var flags = data[5]
 	
 	var new_asteroid_instance : Node3D = asteroid_scene.instantiate()
 	if new_asteroid_instance:
@@ -24,11 +23,12 @@ func custom_spawn(data):
 		if child:
 			new_asteroid_instance.name = id
 			new_asteroid_instance.position = pos
-			new_asteroid_instance.angular_velocity = ang_vel
-			new_asteroid_instance.linear_velocity = lin_vel
+			new_asteroid_instance.angular_velocity = flags["ang"] if flags.has("ang") else Vector3.ZERO 
+			new_asteroid_instance.linear_velocity = flags["lin"] if flags.has("lin") else Vector3.ZERO 
 			child.asteroid_type = type
 			child.asteroid_state = state
 			child.ore_amount = ore
+			child.asteroid_ore = flags["ore"] if flags.has("ore") else "Stone"
 			child.update_flag = true  # Ensure the asteroid updates itself
 		else:
 			print("ScriptNode not found in the new asteroid instance.")

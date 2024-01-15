@@ -1,14 +1,22 @@
 class_name Asteroid extends Activatable
 
+var type : Array = ["C-Type", "S-Type", "M-Type"]
+var ore : Array = ["Stone", "Auplnickel", "Kamacite", "Magalzinc"]
+
 @export var asteroid_scene = preload("res://Entities/Asteroid.tscn")
-@export var asteroid_script = preload("res://Scripts/Asteroid.gd") # Use `load()` if you don't want to preload
+@export var asteroid_script = preload("res://Scripts/Asteroid.gd")
 
 @export var material1 = preload("res://Materials/Stone.material")
-@export var material2 = preload("res://Materials/Copper.material")
+@export var material2 = preload("res://Materials/Auplnickel.material")               
+@export var material3 = preload("res://Materials/Kamacite.material")
+@export var material4 = preload("res://Materials/Magalzinc.material")
 
-@export var asteroid_type = "stone"
+@export var asteroid_type = ""
+@export var asteroid_ore = ""
 @export var asteroid_state = 3
 @export var ore_amount = 0
+@export var ore_multiplier = 0
+
 var update_flag = false
 var click_flag = false
 
@@ -20,10 +28,12 @@ func _ready():
 	update_flag = true
 
 func _process(delta):
-	#If we have newer information, update it.
-	#Flag allows us to save performance by only updating when we have new info
+	# If we have newer information, update it.
+	# Flag allows us to save performance by only updating when we have new info
 	if update_flag:
 		update_scale()
+		update_type()
+		update_ore()
 		root_node.mass = asteroid_state * asteroid_state * asteroid_state
 		update_flag = false
 		
@@ -38,14 +48,31 @@ func update_scale():
 		_:
 			print_debug("Bro what?")
 
-func update_material():
+func update_type():
 	match(asteroid_type):
 		"C-Type":
-			pass
+			# Silicate Clay asteroid, minimal ore
+			ore_multiplier = 0.5
 		"S-Type":
-			pass
+			# Stoney asteroid, some ore
+			ore_multiplier = 1
 		"M-Type":
+			# Mettalic asteroid, mostly ore
+			ore_multiplier = 1.5
+		_:
 			pass
+
+# Update the texture to match current ore type
+func update_ore():
+	match(asteroid_ore):
+		"Stone":
+			model.set_surface_override_material(0, material1)
+		"Auplnickel":
+			model.set_surface_override_material(0, material2)
+		"Kamacite":
+			model.set_surface_override_material(0, material3)
+		"Magalzinc":
+			model.set_surface_override_material(0, material4)
 		_:
 			pass
 	
@@ -63,12 +90,15 @@ func split():
 		var pos = self.global_position + Utility.random_vector3_uniform(-0.5, 0.5)
 		if(is_multiplayer_authority()):
 			AsteroidSpawner.create_asteroid({
-				pos = pos,
-				asteroid_type = self.asteroid_type, 
-				asteroid_state = self.asteroid_state - 1, 
-				ore_amount = self.ore_amount, 
-				angular = root_node.angular_velocity + Utility.random_vector3_uniform(-0.5, 0.5), 
-				linear = root_node.linear_velocity + Utility.random_vector3_uniform(-0.5, 0.5)
+					pos = pos,
+					asteroid_type = self.asteroid_type, 
+					asteroid_state = self.asteroid_state - 1, 
+					ore_amount = self.ore_amount,
+					flags = { 
+						ang = root_node.angular_velocity + Utility.random_vector3_uniform(-0.5, 0.5), 
+						lin = root_node.linear_velocity + Utility.random_vector3_uniform(-0.5, 0.5),
+						ore = self.asteroid_ore
+					},
 				})
 	
 	if(is_multiplayer_authority()):
@@ -103,11 +133,14 @@ func convert_to_data():
 		asteroid_type = self.asteroid_type,
 		asteroid_state = self.asteroid_state,
 		ore_amount = self.ore_amount,
-		angular = root_node.angular_velocity,
-		linear = root_node.linear_velocity
+		flags = {
+			ang = root_node.angular_velocity,
+			lin = root_node.linear_velocity,
+			ore = self.asteroid_ore,
+		},
 	}
 	
-#Abstract/Interface Functions
+# Abstract/Interface Functions
 func activate(type) -> void:
 	match(type["info"]):
 		"Left Mouse Button":

@@ -127,5 +127,4 @@ func _jump(delta: float) -> Vector3:
 	
 func process_asteroid_stack():
 	if asteroid_stack.size() != asteroid_stack_last_size:
-		asteroid_stack.pretty_print()
 		asteroid_stack_last_size = asteroid_stack.size()

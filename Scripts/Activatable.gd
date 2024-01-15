@@ -8,5 +8,4 @@ func activate(type) -> void:
 
 @rpc("any_peer")
 func activate_rpc(type):
-	print(type)
 	activate(type)

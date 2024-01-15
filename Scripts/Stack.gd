@@ -9,7 +9,7 @@ func push(item):
 # Method to pop the top item from the stack
 func pop():
 	if is_empty():
-		print("Stack is empty")
+		print_debug("Can't pop stack. Stack is empty")
 		return null
 	else:
 		return stack_array.pop_back()
@@ -25,14 +25,14 @@ func size():
 # Method to peek at the top item without removing it
 func peek():
 	if is_empty():
-		print("Stack is empty")
+		print_debug("Can't peek stack. Stack is empty")
 		return null
 	else:
 		return stack_array[stack_array.size() - 1]
 		
 func has(item):
 	if is_empty(): 
-		print("Stack is empty")
+		print_debug("Item not in stack. Stack is empty")
 		return null
 	else:
 		return stack_array.has(item)

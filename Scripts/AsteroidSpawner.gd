@@ -17,16 +17,17 @@ func _ready():
 	pass
 	
 func inital_setup():
-		print("Multiplayer setup:" + str(multiplayer.get_unique_id()))
-		
-		for i in range(10):
+		for i in range(25):
 			var initial_properties = {
 				pos = Utility.random_vector3_exclusion(Vector3(-250, -250, -250), Vector3(250, 250, 250), Vector3(-25, -25, -25), Vector3(25, 25, 25)),
-				asteroid_type = "stone",
+				asteroid_type = Utility.random_from_list(["C-Type", "S-Type", "M-Type"]),
 				asteroid_state = randi_range(1, 3),
 				ore_amount = randf_range(1, 10),
-				angular = Utility.random_vector3(Vector3(-5, -5, -5), Vector3(5, 5, 5)),
-				linear = Utility.random_vector3(Vector3(-5, -5, -5), Vector3(5, 5, 5))
+				flags = {
+					lin = Utility.random_vector3(Vector3(-5, -5, -5), Vector3(5, 5, 5)), 
+					ang = Utility.random_vector3(Vector3(-1, -1, -1), Vector3(1, 1, 1)),
+					ore = Utility.random_from_list(["Stone", "Auplnickel", "Kamacite", "Magalzinc"])
+				},
 			}
 			create_asteroid(initial_properties)
 		
@@ -39,8 +40,7 @@ func create_asteroid(asteroid_properties):
 			asteroid_properties.asteroid_state,
 			asteroid_properties.ore_amount,
 			Asteroids.size()+1,
-			asteroid_properties.angular,
-			asteroid_properties.linear
+			asteroid_properties.flags,
 		])
 	
 func remove_asteroid(name):

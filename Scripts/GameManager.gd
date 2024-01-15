@@ -1,5 +1,6 @@
 extends Node
 
+var version = "2024.01.08-1"
 var Players = {}
 var current_profit = 0
 

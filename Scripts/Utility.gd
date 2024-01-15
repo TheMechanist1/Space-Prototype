@@ -24,3 +24,5 @@ func is_within_exclusion_zone(pos, exclusion_min, exclusion_max):
 		exclusion_min.z <= pos.z and pos.z <= exclusion_max.z
 	)
 	
+func random_from_list(list):
+	return list[randi_range(0, list.size()-1)]

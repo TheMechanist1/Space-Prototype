@@ -15,8 +15,8 @@ func _ready():
 	
 func fire_projectile():
 	if has_projectile:
-		GameManager.add_profit(projectile_script.ore_amount * driver_multiplier)
-		print(projectile_node)
+		GameManager.add_profit_rpc.rpc(projectile_script.ore_amount * projectile_script.ore_multiplier * driver_multiplier)
+		GameManager.add_profit(projectile_script.ore_amount * projectile_script.ore_multiplier * driver_multiplier)
 		projectile_node.apply_impulse(barrel_direction * Vector3(1000, 1000, 1000))
 		projectile_script.add_deletion_timer(1)
 		has_projectile = false
@@ -30,8 +30,8 @@ func add_to_barrel(type):
 		projectile = player.asteroid_stack.pop()
 		has_projectile = true
 		projectile.pos = %ProjectileChamber.global_position
-		projectile.angular = Vector3.ZERO
-		projectile.linear = Vector3.ZERO
+		projectile.flags["lin"] = Vector3.ZERO
+		projectile.flags["ang"] = Vector3.ZERO
 		projectile_node = AsteroidSpawner.create_asteroid(projectile)
 		projectile_script = projectile_node.find_child("ScriptNode")
 		projectile_script.disable_collision()
