@@ -28,7 +28,7 @@ func join_game(address = ""):
 	if error:
 		return error
 	multiplayer.multiplayer_peer = peer
-	print("Connecting To Server")
+	print(str(multiplayer.get_unique_id()) + ": Connecting To Server")
 
 
 func create_game():
@@ -37,15 +37,17 @@ func create_game():
 	if error:
 		return error
 	multiplayer.multiplayer_peer = peer
-	send_player_information($TextEdit.text, multiplayer.get_unique_id())
-	print("Succesfully Started Server")
+	send_player_information("Lmao", multiplayer.get_unique_id())
+	print(str(multiplayer.get_unique_id()) + ": Succesfully Started Server")
 	
 @rpc("any_peer", "call_local")
 func start_game():
 	var scene = load("res://Levels/MainScreen.tscn").instantiate()
-	get_tree().root.add_child(scene)
-	self.hide()
-	print("Running")
+	#get_tree().root.add_child(scene)
+	load_game("res://Levels/MainScreen.tscn")
+	#self.hide()
+	
+	#Add asteroids here I think
 
 func remove_multiplayer_peer():
 	multiplayer.multiplayer_peer = null
@@ -54,20 +56,19 @@ func remove_multiplayer_peer():
 @rpc("call_local", "unreliable")
 func load_game(game_scene_path):
 	get_tree().change_scene_to_file(game_scene_path)
-
+	
 # When a peer connects, send them my player info.
 # This allows transfer of all desired data for each player, not only the unique ID.
 func _on_player_connected(id):
 	print("Peer Connected " + str(id))
 	
 func _on_player_disconnected(id):
-	print("Peer Disconnected " + str(id))
 	player_disconnected.emit(id)
+	print("Peer Disconnected " + str(id))
 
 #More secure way to transfer information
 func _on_connected_ok():
-	send_player_information.rpc_id(1, $TextEdit.text, multiplayer.get_unique_id())
-	print("Connected!!!")
+	send_player_information.rpc_id(1, "Lmao", multiplayer.get_unique_id())
 
 func _on_connected_fail():
 	print("Peer failed to connect")	
@@ -75,9 +76,9 @@ func _on_connected_fail():
 
 
 func _on_server_disconnected():
-	print("Server Disconnected")
-	multiplayer.multiplayer_peer = null
 	server_disconnected.emit()
+	multiplayer.multiplayer_peer = null
+	print("Server Disconnected")
 	
 @rpc("any_peer")
 func send_player_information(name, id):
@@ -88,6 +89,7 @@ func send_player_information(name, id):
 			"id" = id,
 			"score" = 0
 		}
+		
 	#Send that information to everyone else whos connected
 	if multiplayer.is_server():
 		for i in GameManager.Players:

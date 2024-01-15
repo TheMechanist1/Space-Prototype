@@ -17,9 +17,8 @@ properties/2/spawn = true
 properties/2/sync = true
 properties/2/watch = false
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ax4vw"]
-radius = 1.0
-height = 4.0
+[sub_resource type="SphereShape3D" id="SphereShape3D_dnppu"]
+radius = 1.014
 
 [node name="Player" type="CharacterBody3D"]
 motion_mode = 1
@@ -35,6 +34,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 replication_config = SubResource("SceneReplicationConfig_w0d08")
 
 [node name="Head" type="Node3D" parent="."]
+unique_name_in_owner = true
 
 [node name="Camera" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, -1.98423e-09, 0, 1, 0, 1.98423e-09, 0, 1, 0, 1, 0.0888989)
@@ -44,6 +44,16 @@ transform = Transform3D(-1, 1.76073e-08, -8.77409e-08, -1.93235e-08, -0.999808, 
 spot_range = 29.0
 spot_angle = 49.2188
 
+[node name="RayCast3D" type="RayCast3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0)
+target_position = Vector3(0, -10, 0)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 1.8)
-shape = SubResource("CapsuleShape3D_ax4vw")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 1)
+shape = SubResource("SphereShape3D_dnppu")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.29544, 0)
+billboard = 1
+text = "HELLO"
+font_size = 50

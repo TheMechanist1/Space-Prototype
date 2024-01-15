@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://581eb8dgrorj"]
+[gd_scene load_steps=10 format=3 uid="uid://581eb8dgrorj"]
 
-[ext_resource type="PackedScene" uid="uid://dxwy31gjv5kis" path="res://Models/MiningShip.glb" id="1_2ybgt"]
 [ext_resource type="Script" path="res://Scripts/SceneManager.gd" id="1_q2oyc"]
 [ext_resource type="PackedScene" uid="uid://jsic8utshhff" path="res://Entities/Player.tscn" id="2_tqcjd"]
 [ext_resource type="Texture2D" uid="uid://del2q851ry2xy" path="res://skybox/left.png" id="4_luiyv"]
-[ext_resource type="PackedScene" uid="uid://b4ddcwccom44y" path="res://Entities/Asteroid1.tscn" id="5_nf57k"]
+[ext_resource type="Script" path="res://Levels/AsteroidMultiplayerSpawner.gd" id="5_suvoi"]
+[ext_resource type="PackedScene" uid="uid://dkexik1kodrb5" path="res://Entities/MiningShip.tscn" id="6_7vvox"]
+[ext_resource type="PackedScene" uid="uid://bod1m0fwuxvbk" path="res://Entities/MassDriver.tscn" id="6_d5q7o"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_d68ej"]
 panorama = ExtResource("4_luiyv")
@@ -23,18 +24,32 @@ player_scene = ExtResource("2_tqcjd")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.0610136, 0.998137, 0, -0.998137, 0.0610136, -4.97532, 23.2539, -60)
 
-[node name="MiningShip" parent="." instance=ExtResource("1_2ybgt")]
-transform = Transform3D(4.5, 0, 0, 0, 4.5, 0, 0, 0, 4.5, 0, 0, 0)
-
 [node name="PlayerSpawns" type="Node3D" parent="."]
 
 [node name="0" type="Node3D" parent="PlayerSpawns" groups=["PlayerSpawns"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 12.7621, -36)
 
+[node name="1" type="Node3D" parent="PlayerSpawns" groups=["PlayerSpawns"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.3422, 12.7621, -36)
+
+[node name="2" type="Node3D" parent="PlayerSpawns" groups=["PlayerSpawns"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126.526, 25.5242, -72)
+
+[node name="3" type="Node3D" parent="PlayerSpawns" groups=["PlayerSpawns"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.2318, 25.5242, -72)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_47o0t")
 
-[node name="Asteroid1" parent="." instance=ExtResource("5_nf57k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 11, -23)
-can_sleep = false
-angular_velocity = Vector3(0.0872665, 0, 0)
+[node name="AsteroidMultiSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Entities/Asteroid.tscn")
+spawn_path = NodePath("..")
+script = ExtResource("5_suvoi")
+
+[node name="MassDriver" parent="." instance=ExtResource("6_d5q7o")]
+transform = Transform3D(1, 0, 0, 0, 0.964502, -0.264075, 0, 0.264075, 0.964502, 0, 19.9061, -15)
+
+[node name="MiningShip" parent="." instance=ExtResource("6_7vvox")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+
+[connection signal="spawned" from="AsteroidMultiSpawner" to="AsteroidMultiSpawner" method="_on_spawned"]

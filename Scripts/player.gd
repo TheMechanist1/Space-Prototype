@@ -1,8 +1,8 @@
 class_name Player extends CharacterBody3D
 
 @export_category("Player")
-@export_range(1, 35, 1) var speed: float = 10 # m/s
-@export_range(10, 400, 1) var acceleration: float = 100 # m/s^2
+@export_range(1, 35, 1) var speed: float = 25 # m/s
+@export_range(10, 400, 1) var acceleration: float = 25 # m/s^2
 @export var SENSITIVITY: float = 1 # m/s^2
 
 
@@ -25,21 +25,29 @@ var updown_vel: Vector3
 @onready var camera: Camera3D = $Head/Camera
 @onready var head = $Head
 @onready var model = $Model
+@onready var RayCast = $Head/RayCast3D
 
+var asteroid_stack_last_size
+var asteroid_stack : Stack
 	
 func _on_enter_tree():
-	pass
+	camera.current = false
 	
 func _ready() -> void:
 	$MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
+	print("Name:", name, " Auth:", $MultiplayerSynchronizer.get_multiplayer_authority(), " id:", multiplayer.get_unique_id())
+	$Label3D.text = str(name)
 	capture_mouse()
 	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		model.visible = false
 		camera.current = true
-		print(name + " id " + str($MultiplayerSynchronizer.get_multiplayer_authority()))
 	else:
 		model.visible = true
+		camera.current = false
+		
+	asteroid_stack = Stack.new()
+	asteroid_stack_last_size = 0
 
 func _unhandled_input(event: InputEvent) -> void:	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
@@ -48,22 +56,38 @@ func _unhandled_input(event: InputEvent) -> void:
 			#if mouse_captured: _rotate_camera()
 			head.rotate_y(-event.relative.x * SENSITIVITY)
 			model.rotate_y(-event.relative.x * SENSITIVITY)
-			
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
-			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 			
-		if Input.is_action_just_pressed("exit"): get_tree().quit()
+			$Head/RayCast3D.rotation.x = camera.rotation.x + deg_to_rad(90)
+		
+		if event is InputEventMouseButton and event.is_pressed():
+			if(RayCast.is_colliding() && RayCast.get_collider()):
+				var collider = RayCast.get_collider()
+				var script_node = collider.get_node("ScriptNode") if collider.has_node("ScriptNode") else null
+				if(script_node is Activatable):
+					var info_to_send = {"node_path" = self.get_path(), "info" = event.as_text()}
+					script_node.activate_rpc.rpc(info_to_send)
+					script_node.activate(info_to_send)
+		
+		if Input.is_action_just_pressed("exit"):
+			Lobby.server_disconnected.emit()
+			get_tree().quit()
+			
+		camera.rotation.x = clampf(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))	
+		camera.rotation.y = 0
+		camera.rotation.z = 0
 
 func _physics_process(delta: float) -> void:
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		velocity = _walk(delta) + _gravity(delta) + _jump(delta)
 		move_and_slide()
+		process_asteroid_stack()
 		
-		var collision = move_and_collide(velocity * delta)
-		if collision and collision.get_collider() is RigidBody3D:
+		var collision = move_and_slide()
+		if collision and get_slide_collision(0).get_collider() is RigidBody3D:
 			var push_direction = velocity.normalized()
-			var push_strength = 0.1
-			collision.get_collider().apply_central_force(push_direction * push_strength)
+			var push_strength = 1
+			get_slide_collision(0).get_collider().apply_central_impulse(push_direction * push_strength)
 			
 func capture_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -98,5 +122,9 @@ func _jump(delta: float) -> Vector3:
 		
 	jump_vel = Vector3(0, dir*speed, 0)
 	
-	jump_vel = jump_vel.move_toward(Vector3.ZERO, gravity * delta)
+	jump_vel = jump_vel.move_toward(Vector3.ZERO, acceleration * delta)
 	return jump_vel
+	
+func process_asteroid_stack():
+	if asteroid_stack.size() != asteroid_stack_last_size:
+		asteroid_stack_last_size = asteroid_stack.size()

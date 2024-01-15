@@ -1,11 +1,15 @@
 extends Node
 
+var version = "2024.01.08-1"
 var Players = {}
-# Called when the node enters the scene tree for the first time.
+var current_profit = 0
+
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
 	pass
+	
+func add_profit(profit):
+	current_profit += profit
+	
+@rpc("any_peer")
+func add_profit_rpc(profit):
+	add_profit(profit)
