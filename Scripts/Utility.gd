@@ -24,5 +24,17 @@ func is_within_exclusion_zone(pos, exclusion_min, exclusion_max):
 		exclusion_min.z <= pos.z and pos.z <= exclusion_max.z
 	)
 	
-func random_from_list(list):
+func random_from_list(list : Array):
 	return list[randi_range(0, list.size()-1)]
+	
+func random_from_dict(dict : Dictionary):
+	return dict.get(random_from_list(dict.keys()))
+	
+func move_toward_vector3(from : Vector3, to : Vector3, delta = 0.01):
+	var x = move_toward(from.x, to.x, delta)
+	var y = move_toward(from.y, to.y, delta)
+	var z = move_toward(from.z, to.z, delta)
+	return Vector3(x, y, z)
+	
+func look_at_node(looking_node : Node3D, target_node : Node3D):
+	looking_node.look_at(target_node.global_position, Vector3.MODEL_TOP)

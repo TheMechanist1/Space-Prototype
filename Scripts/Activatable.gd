@@ -4,7 +4,7 @@ func get_node_from_type(type):
 	return get_tree().root.get_node(NodePath(str(type["node_path"])))
 	
 func activate(type) -> void:
-	print("Activated")
+	print("Activated: ", type)
 
 @rpc("any_peer")
 func activate_rpc(type):

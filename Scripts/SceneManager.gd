@@ -20,13 +20,16 @@ func _ready():
 		var current_player = player_scene.instantiate()
 		current_player.name = str(GameManager.Players[i].id)
 		add_child(current_player)
+		current_player.add_to_group("Players")
 		
 		for spawn in get_tree().get_nodes_in_group("PlayerSpawns"):
 			if(spawn.name == str(index)):
 				current_player.global_position = spawn.global_position
 		index+=1
 		
-		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	for player in get_tree().get_nodes_in_group("Players"):
+		if(player.name == "1"):
+			pass
+

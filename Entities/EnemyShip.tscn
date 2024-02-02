@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjtb6lcuqpvck"]
+
+[ext_resource type="PackedScene" uid="uid://x2drly5msc2n" path="res://Models/EnemyShip.glb" id="1_c457x"]
+[ext_resource type="Script" path="res://Entities/EnemyShip.gd" id="2_312b0"]
+
+[node name="EnemyShip" instance=ExtResource("1_c457x")]
+
+[node name="Suzanne" parent="." index="0"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="ScriptNode" type="Node3D" parent="." index="1"]
+script = ExtResource("2_312b0")
+
+[node name="Agent" type="NavigationAgent3D" parent="." index="2"]
+unique_name_in_owner = true
+target_desired_distance = 5.0
+avoidance_enabled = true
+use_3d_avoidance = true
+debug_enabled = true

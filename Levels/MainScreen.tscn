@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://581eb8dgrorj"]
+[gd_scene load_steps=11 format=3 uid="uid://581eb8dgrorj"]
 
 [ext_resource type="Script" path="res://Scripts/SceneManager.gd" id="1_q2oyc"]
 [ext_resource type="PackedScene" uid="uid://jsic8utshhff" path="res://Entities/Player.tscn" id="2_tqcjd"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Levels/AsteroidMultiplayerSpawner.gd" id="5_suvoi"]
 [ext_resource type="PackedScene" uid="uid://dkexik1kodrb5" path="res://Entities/MiningShip.tscn" id="6_7vvox"]
 [ext_resource type="PackedScene" uid="uid://bod1m0fwuxvbk" path="res://Entities/MassDriver.tscn" id="6_d5q7o"]
+[ext_resource type="PackedScene" uid="uid://bjtb6lcuqpvck" path="res://Entities/EnemyShip.tscn" id="7_e6j3n"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_d68ej"]
 panorama = ExtResource("4_luiyv")
@@ -48,6 +49,9 @@ script = ExtResource("5_suvoi")
 
 [node name="MassDriver" parent="." instance=ExtResource("6_d5q7o")]
 transform = Transform3D(1, 0, 0, 0, 0.964502, -0.264075, 0, 0.264075, 0.964502, 0, 19.9061, -15)
+
+[node name="EnemyShip" parent="." instance=ExtResource("7_e6j3n")]
+transform = Transform3D(4.26328, 0, 0, 0, 4.26328, 0, 0, 0, 4.26328, -59.3068, -4.62898, -19.0579)
 
 [node name="MiningShip" parent="." instance=ExtResource("6_7vvox")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)

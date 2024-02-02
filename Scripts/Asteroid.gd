@@ -22,12 +22,13 @@ var click_flag = false
 
 @onready var root_node = get_parent_node_3d()
 @onready var collider = %CollisionShape3D
-@onready var model = $Icosphere
+@onready var nav = %NavigationObstacle3D
+@onready var model = %Icosphere
 
 func _ready():
 	update_flag = true
 
-func _process(delta):
+func _process(_delta):
 	# If we have newer information, update it.
 	# Flag allows us to save performance by only updating when we have new info
 	if update_flag:
@@ -79,6 +80,7 @@ func update_ore():
 func scale_object(amount : Vector3):
 	model.scale = amount
 	collider.scale = amount
+	#nav.scale = amount
 
 func split():
 	if asteroid_state == 1 || click_flag: 

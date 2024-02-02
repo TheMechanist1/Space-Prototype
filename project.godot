@@ -12,7 +12,7 @@ config_version=5
 
 config/name="SpacePrototype"
 run/main_scene="res://Levels/MainWorld.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -65,3 +65,7 @@ exit={
 3d/default_gravity=0.0
 3d/default_linear_damp=0.0
 3d/default_angular_damp=0.0
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
