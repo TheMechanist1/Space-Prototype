@@ -1,13 +1,19 @@
 extends Node3D
+# This is the enemy class, it will take a lot of insperation from factorio's biter algorithms
+# They will like to group up before deciding which action to take
 
-enum State {IDIL, SEARCHING, STEALING, SHOOTING, FLEEING}
+
+# Start off in idle, This is where we choose which action we want to take
+# 
+enum State {IDLE, STEALING, SHOOTING, FLEEING}
+enum StateMode {TRAVELING, ACTION}
 
 @onready var root_node = get_parent_node_3d()
 @onready var agent = %Agent
 
 var target_randomizer
-var current_target
-var current_state : State = State.IDIL
+var current_target : Node3D
+var current_state : State = State.IDLE
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +25,21 @@ func _process(delta):
 		if(player.name == str(target_randomizer.id)):
 			current_target = player
 			Utility.look_at_node(root_node, player.head)
-
+			
+	var distance = Utility.distance(root_node.position, current_target.position)
+	
 	match current_state:
-		State.IDIL:
-			root_node.position = Utility.move_toward_vector3(root_node.position, current_target.position, delta * 10)
+		State.IDLE:
+			if(move_to_position(current_target.position, delta)):
+				current_state = Utility.random_from_list([State.STEALING, State.SHOOTING, State.FLEEING])
+		State.STEALING:
+			if(move_to_position(current_target.position + Vector3(0, 0, 10), delta)):
+				print("LMAO1")
+		State.SHOOTING:
+			print("LMAO2")
+		State.FLEEING:
+			print("LMAO3")
+			
+func move_to_position(pos : Vector3, delta):
+	root_node.position = Utility.move_toward_vector3(root_node.position, pos, delta)
+	return Utility.distance(root_node.position, current_target.position) <= 1

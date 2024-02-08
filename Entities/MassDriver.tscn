@@ -30,12 +30,6 @@ _data = {
 
 [node name="MassDriver" instance=ExtResource("1_jl6u3")]
 
-[node name="Cube_001" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 10, 0, 4, -9.8)
-
-[node name="Cylinder" parent="." index="1"]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -1.37769)
-
 [node name="Cylinder_001" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 2.2)
 

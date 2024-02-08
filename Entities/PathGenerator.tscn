@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsyoclhhsrqms"]
+
+[ext_resource type="Script" path="res://Entities/PathGenerator.gd" id="1_h3165"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_byf0e"]
+size = Vector3(8, 8, 8)
+
+[node name="PathGenerator" type="Node3D"]
+script = ExtResource("1_h3165")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_byf0e")
+
+[connection signal="body_entered" from="Area3D" to="." method="node_occupied"]
+[connection signal="body_exited" from="Area3D" to="." method="node_clear"]

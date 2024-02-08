@@ -22,7 +22,6 @@ var click_flag = false
 
 @onready var root_node = get_parent_node_3d()
 @onready var collider = %CollisionShape3D
-@onready var nav = %NavigationObstacle3D
 @onready var model = %Icosphere
 
 func _ready():

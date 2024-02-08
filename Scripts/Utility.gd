@@ -31,10 +31,14 @@ func random_from_dict(dict : Dictionary):
 	return dict.get(random_from_list(dict.keys()))
 	
 func move_toward_vector3(from : Vector3, to : Vector3, delta = 0.01):
-	var x = move_toward(from.x, to.x, delta)
-	var y = move_toward(from.y, to.y, delta)
-	var z = move_toward(from.z, to.z, delta)
+	var x = from.x + delta*(to.x - from.x)
+	var y = from.y + delta*(to.y - from.y)
+	var z = from.z + delta*(to.z - from.z)
 	return Vector3(x, y, z)
 	
 func look_at_node(looking_node : Node3D, target_node : Node3D):
 	looking_node.look_at(target_node.global_position, Vector3.MODEL_TOP)
+
+# Get the distance between two vector3s
+func distance(from : Vector3, to : Vector3):
+	return sqrt((to.x - from.x)**2 + (to.y - from.y)**2 + (to.z - from.z)**2)
